@@ -23,11 +23,11 @@ func NewFireStore() (*FireStore, error) {
 		client, err = firestore.NewClient(ctx, conf.Infrastructure.GoogleCloud.ProjectID, option.WithCredentialsFile(conf.Infrastructure.GoogleCloud.CredentialsFilePath))
 		if err != nil {
 			return nil, fmt.Errorf("failed to create FireStore client with credentials file: %w", err)
-		} else {
-			client, err = firestore.NewClient(ctx, conf.Infrastructure.GoogleCloud.ProjectID)
-			if err != nil {
-				return nil, fmt.Errorf("failed to create FireStore client: %w", err)
-			}
+		}
+	} else {
+		client, err = firestore.NewClient(ctx, conf.Infrastructure.GoogleCloud.ProjectID)
+		if err != nil {
+			return nil, fmt.Errorf("failed to create FireStore client: %w", err)
 		}
 	}
 
