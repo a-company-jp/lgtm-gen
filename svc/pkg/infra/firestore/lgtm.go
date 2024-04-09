@@ -3,6 +3,7 @@ package firestore
 import (
 	"context"
 	"lgtm-gen/svc/pkg/infra/entity"
+	"time"
 
 	"cloud.google.com/go/firestore"
 )
@@ -37,4 +38,21 @@ func (l *LGTMTable) List() ([]*entity.LGTM, error) {
 	}
 
 	return lgtms, nil
+}
+
+// Create add item to firebase
+func (l *LGTMTable) Create(id string, title string) error {
+	ctx := context.Background()
+	loc, err := time.LoadLocation("Asia/Tokyo")
+	if err != nil {
+		return err
+	}
+	_, err = l.fsClient.Collection(LGTMCollectionName).Doc(id).Set(ctx, map[string]interface{}{
+		"title":     title,
+		"createdAt": time.Now().In(loc),
+	})
+	if err != nil {
+		return err
+	}
+	return nil
 }
