@@ -10,6 +10,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
 type LGTMHandler struct {
@@ -35,6 +36,14 @@ func (l *LGTMHandler) CreateLGTM() gin.HandlerFunc {
 		lgtm, err := lgtmgen.Generate(imgData)
 		if err != nil {
 			log.Println(err)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		// FireStoreにデータを保存
+		id := uuid.New().String()
+		err = l.lgtmRepo.Create(id)
+		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
