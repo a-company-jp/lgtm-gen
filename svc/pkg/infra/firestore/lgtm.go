@@ -21,7 +21,7 @@ func NewLGTMTable() *LGTMTable {
 func (l *LGTMTable) List() ([]*entity.LGTM, error) {
 	ctx := context.Background()
 	// TODO: pagination
-	docs, err := l.fsClient.Collection("lgtms").Documents(ctx).GetAll()
+	docs, err := l.fsClient.Collection(LGTMCollectionName).Documents(ctx).GetAll()
 	if err != nil {
 		return nil, err
 	}
