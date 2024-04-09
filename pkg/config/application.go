@@ -6,14 +6,8 @@ type (
 		GCS    GCS    `yaml:"gcs"`
 	}
 	Server struct {
-		OnProduction bool     `yaml:"on_production"`
-		Frontend     Frontend `yaml:"frontend"`
-		Backend      Backend  `yaml:"backend"`
-	}
-	Frontend struct {
-		Protocol string `yaml:"protocol"`
-		Domain   string `yaml:"domain"`
-		Port     string `yaml:"port"`
+		OnProduction bool    `yaml:"on_production"`
+		Backend      Backend `yaml:"backend"`
 	}
 	Backend struct {
 		Protocol string `yaml:"protocol"`
