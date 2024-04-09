@@ -1,28 +1,29 @@
-package firestore
+package infra
 
 import (
 	"context"
+	"lgtm-gen/pkg/fs"
 	"lgtm-gen/svc/pkg/domain/model"
 	"time"
-
-	"cloud.google.com/go/firestore"
 )
 
 const LGTMCollectionName = "lgtms"
 
 type LGTMTable struct {
-	fsClient *firestore.Client
+	f *fs.FireStore
 }
 
-func NewLGTMTable() *LGTMTable {
-	return &LGTMTable{}
+func NewLGTMTable(f *fs.FireStore) *LGTMTable {
+	return &LGTMTable{
+		f: f,
+	}
 }
 
 // List get list of lgtm images data
 func (l *LGTMTable) List() ([]*model.LGTM, error) {
 	ctx := context.Background()
 	// TODO: pagination
-	docs, err := l.fsClient.Collection(LGTMCollectionName).Documents(ctx).GetAll()
+	docs, err := l.f.Client.Collection(LGTMCollectionName).Documents(ctx).GetAll()
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +48,7 @@ func (l *LGTMTable) Create(id string) error {
 	if err != nil {
 		return err
 	}
-	_, err = l.fsClient.Collection(LGTMCollectionName).Doc(id).Set(ctx, map[string]interface{}{
+	_, err = l.f.Client.Collection(LGTMCollectionName).Doc(id).Set(ctx, map[string]interface{}{
 		"createdAt": time.Now().In(loc),
 	})
 	if err != nil {

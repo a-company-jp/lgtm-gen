@@ -5,6 +5,7 @@ import (
 	"io"
 	"lgtm-gen/pkg/lgtmgen"
 	"lgtm-gen/svc/pkg/application/response"
+	"lgtm-gen/svc/pkg/domain"
 	"log"
 	"net/http"
 
@@ -12,10 +13,13 @@ import (
 )
 
 type LGTMHandler struct {
+	lgtmRepo domain.ILGTMRepository
 }
 
-func NewLGTMHandler() *LGTMHandler {
-	return &LGTMHandler{}
+func NewLGTMHandler(lgtmRepo domain.ILGTMRepository) *LGTMHandler {
+	return &LGTMHandler{
+		lgtmRepo: lgtmRepo,
+	}
 }
 
 func (l *LGTMHandler) CreateLGTM() gin.HandlerFunc {
