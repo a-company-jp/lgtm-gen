@@ -1,6 +1,8 @@
 package main
 
 import (
+	"lgtm-gen/pkg/fs"
+	infra "lgtm-gen/svc/pkg/infra/firestore"
 	"log"
 	"net/http"
 
@@ -43,9 +45,13 @@ func main() {
 		})
 	})
 
-	// api
+	f, err := fs.NewFireStore()
+	if err != nil {
+		log.Fatalf("failed to connect to firebase, err: %v", err)
+	}
+
 	apiV1 := r.Group("/api/v1")
-	if err := Implement(apiV1); err != nil {
+	if err := Implement(apiV1, f); err != nil {
 		log.Fatalf("Failed to start server...%v", err)
 		return
 	}
@@ -56,8 +62,8 @@ func main() {
 	}
 }
 
-func Implement(rg *gin.RouterGroup) error {
-	lgtmHandler := handler.NewLGTMHandler()
+func Implement(rg *gin.RouterGroup, f *fs.FireStore) error {
+	lgtmHandler := handler.NewLGTMHandler(infra.NewLGTMTable(f))
 
 	rg.Handle("POST", "/lgtm", lgtmHandler.CreateLGTM())
 
