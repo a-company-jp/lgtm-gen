@@ -47,7 +47,7 @@ func main() {
 
 	f, err := fs.NewFireStore()
 	if err != nil {
-		log.Fatalf("failed to connect to firebase, err: %v", err)
+		log.Fatalf("failed to connect to firestore, err: %v", err)
 	}
 
 	apiV1 := r.Group("/api/v1")
