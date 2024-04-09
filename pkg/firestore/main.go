@@ -6,7 +6,6 @@ import (
 	"lgtm-gen/pkg/config"
 
 	"cloud.google.com/go/firestore"
-	firebase "firebase.google.com/go"
 	"google.golang.org/api/option"
 )
 
@@ -18,23 +17,18 @@ func NewFireStore() (*FireStore, error) {
 	conf := config.Get()
 	ctx := context.Background()
 
-	var app *firebase.App
+	var client *firestore.Client
 	var err error
 	if conf.Infrastructure.GoogleCloud.UseCredentialsFile {
-		app, err = firebase.NewApp(ctx, nil, option.WithCredentialsFile(conf.Infrastructure.GoogleCloud.CredentialsFilePath))
+		client, err = firestore.NewClient(ctx, conf.Infrastructure.GoogleCloud.ProjectID, option.WithCredentialsFile(conf.Infrastructure.GoogleCloud.CredentialsFilePath))
 		if err != nil {
-			return nil, fmt.Errorf("failed to create Firestore app with credentials file: %w", err)
+			return nil, fmt.Errorf("failed to create FireStore client with credentials file: %w", err)
 		} else {
-			app, err = firebase.NewApp(ctx, nil)
+			client, err = firestore.NewClient(ctx, conf.Infrastructure.GoogleCloud.ProjectID)
 			if err != nil {
-				return nil, fmt.Errorf("failed to create Firestore app: %w", err)
+				return nil, fmt.Errorf("failed to create FireStore client: %w", err)
 			}
 		}
-	}
-
-	client, err := app.Firestore(ctx)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create Firestore client: %w", err)
 	}
 
 	return &FireStore{
