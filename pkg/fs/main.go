@@ -1,4 +1,4 @@
-package firestore
+package fs
 
 import (
 	"context"
@@ -10,7 +10,7 @@ import (
 )
 
 type FireStore struct {
-	client *firestore.Client
+	Client *firestore.Client
 }
 
 func NewFireStore() (*FireStore, error) {
@@ -32,6 +32,6 @@ func NewFireStore() (*FireStore, error) {
 	}
 
 	return &FireStore{
-		client: client,
+		Client: client,
 	}, nil
 }
