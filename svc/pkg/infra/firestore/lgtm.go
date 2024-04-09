@@ -29,6 +29,7 @@ func (l *LGTMTable) List() ([]*entity.LGTM, error) {
 	lgtms := make([]*entity.LGTM, len(docs))
 	for i, doc := range docs {
 		var lgtm = entity.LGTM{}
+		lgtm.ID = doc.Ref.ID
 		if err := doc.DataTo(&lgtm); err != nil {
 			return nil, err
 		}
