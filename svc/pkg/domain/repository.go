@@ -1,8 +1,10 @@
 package domain
 
-import "lgtm-gen/svc/pkg/infra/entity"
+import (
+	"lgtm-gen/svc/pkg/domain/model"
+)
 
 type ILGTMRepository interface {
-	List() ([]*entity.LGTM, error)
+	List() ([]*model.LGTM, error)
 	Create(id string, title string) error
 }

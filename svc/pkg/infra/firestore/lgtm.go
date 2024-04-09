@@ -2,7 +2,7 @@ package firestore
 
 import (
 	"context"
-	"lgtm-gen/svc/pkg/infra/entity"
+	"lgtm-gen/svc/pkg/domain/model"
 	"time"
 
 	"cloud.google.com/go/firestore"
@@ -19,7 +19,7 @@ func NewLGTMTable() *LGTMTable {
 }
 
 // List get list of lgtm images data
-func (l *LGTMTable) List() ([]*entity.LGTM, error) {
+func (l *LGTMTable) List() ([]*model.LGTM, error) {
 	ctx := context.Background()
 	// TODO: pagination
 	docs, err := l.fsClient.Collection(LGTMCollectionName).Documents(ctx).GetAll()
@@ -27,9 +27,9 @@ func (l *LGTMTable) List() ([]*entity.LGTM, error) {
 		return nil, err
 	}
 
-	lgtms := make([]*entity.LGTM, len(docs))
+	lgtms := make([]*model.LGTM, len(docs))
 	for i, doc := range docs {
-		var lgtm = entity.LGTM{}
+		var lgtm = model.LGTM{}
 		lgtm.ID = doc.Ref.ID
 		if err := doc.DataTo(&lgtm); err != nil {
 			return nil, err
