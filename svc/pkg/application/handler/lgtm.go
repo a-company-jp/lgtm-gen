@@ -23,7 +23,7 @@ func NewLGTMHandler(lgtmRepo domain.ILGTMRepository) *LGTMHandler {
 	}
 }
 
-func (l *LGTMHandler) CreateLGTM() gin.HandlerFunc {
+func (l LGTMHandler) CreateLGTM() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		imgData, err := io.ReadAll(c.Request.Body)
 		if err != nil {
