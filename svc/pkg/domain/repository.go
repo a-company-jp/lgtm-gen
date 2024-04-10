@@ -4,7 +4,7 @@ import (
 	"lgtm-gen/svc/pkg/domain/model"
 )
 
-type ILGTMRepository interface {
+type ILGTMTableRepository interface {
 	List() ([]model.LGTM, error)
 	Create(id string) error
 }

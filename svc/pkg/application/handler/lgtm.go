@@ -14,10 +14,10 @@ import (
 )
 
 type LGTMHandler struct {
-	lgtmRepo domain.ILGTMRepository
+	lgtmRepo domain.ILGTMTableRepository
 }
 
-func NewLGTMHandler(lgtmRepo domain.ILGTMRepository) *LGTMHandler {
+func NewLGTMHandler(lgtmRepo domain.ILGTMTableRepository) *LGTMHandler {
 	return &LGTMHandler{
 		lgtmRepo: lgtmRepo,
 	}
