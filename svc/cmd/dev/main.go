@@ -45,7 +45,7 @@ func main() {
 		})
 	})
 
-	f, err := fs.NewFireStore()
+	f, err := fs.NewFirestore()
 	if err != nil {
 		log.Fatalf("failed to connect to firestore, err: %v", err)
 	}
@@ -62,7 +62,7 @@ func main() {
 	}
 }
 
-func Implement(rg *gin.RouterGroup, f *fs.FireStore) error {
+func Implement(rg *gin.RouterGroup, f *fs.Firestore) error {
 	lgtmHandler := handler.NewLGTMHandler(infra.NewLGTMTable(f))
 
 	rg.Handle("POST", "/lgtm", lgtmHandler.CreateLGTM())

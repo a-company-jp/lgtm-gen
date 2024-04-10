@@ -10,10 +10,10 @@ import (
 const LGTMCollectionName = "lgtms"
 
 type LGTMTable struct {
-	f *fs.FireStore
+	f *fs.Firestore
 }
 
-func NewLGTMTable(f *fs.FireStore) *LGTMTable {
+func NewLGTMTable(f *fs.Firestore) *LGTMTable {
 	return &LGTMTable{
 		f: f,
 	}
