@@ -72,7 +72,8 @@ func main() {
 func Implement(rg *gin.RouterGroup, f *fs.Firestore, g *gcs.GCS) error {
 	lgtmHandler := handler.NewLGTMHandler(infraFs.NewLGTMTable(f), infraGcs.NewLGTMBucket(g))
 
-	rg.Handle("POST", "/lgtm", lgtmHandler.CreateLGTM())
+	rg.Handle("POST", "/lgtms", lgtmHandler.CreateLGTM())
+	rg.Handle("GET", "/lgtms", lgtmHandler.GetList())
 
 	return nil
 }
