@@ -42,7 +42,7 @@ func (l LGTMTable) List() ([]model.LGTM, error) {
 }
 
 // Create add item to firebase
-func (l LGTMTable) Create(id string) error {
+func (l LGTMTable) Create(id string, url string) error {
 	ctx := context.Background()
 	loc, err := time.LoadLocation("Asia/Tokyo")
 	if err != nil {
@@ -50,6 +50,7 @@ func (l LGTMTable) Create(id string) error {
 	}
 	_, err = l.f.Client.Collection(LGTMCollectionName).Doc(id).Set(ctx, map[string]interface{}{
 		"createdAt": time.Now().In(loc),
+		"url":       url,
 	})
 	if err != nil {
 		return err
