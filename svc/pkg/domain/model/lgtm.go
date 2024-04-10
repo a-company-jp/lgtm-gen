@@ -1,7 +1,8 @@
 package model
 
-type LGTM struct {
-	ID string
-}
+import "time"
 
-type LGTMs []*LGTM
+type LGTM struct {
+	ID        string    `firestore:"-"`
+	CreatedAt time.Time `firestore:"createdAt"`
+}
