@@ -20,7 +20,7 @@ func NewLGTMTable(f *fs.Firestore) *LGTMTable {
 }
 
 // List get list of lgtm images data
-func (l *LGTMTable) List() ([]*model.LGTM, error) {
+func (l LGTMTable) List() ([]*model.LGTM, error) {
 	ctx := context.Background()
 	// TODO: pagination
 	docs, err := l.f.Client.Collection(LGTMCollectionName).Documents(ctx).GetAll()
@@ -42,7 +42,7 @@ func (l *LGTMTable) List() ([]*model.LGTM, error) {
 }
 
 // Create add item to firebase
-func (l *LGTMTable) Create(id string) error {
+func (l LGTMTable) Create(id string) error {
 	ctx := context.Background()
 	loc, err := time.LoadLocation("Asia/Tokyo")
 	if err != nil {
