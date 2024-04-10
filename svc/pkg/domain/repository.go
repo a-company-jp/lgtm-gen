@@ -6,5 +6,9 @@ import (
 
 type ILGTMTableRepository interface {
 	List() ([]model.LGTM, error)
-	Create(id string) error
+	Create(id string, url string) error
+}
+
+type ILGTMBucketRepository interface {
+	Create(objectName string, data []byte) error
 }
