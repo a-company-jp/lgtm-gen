@@ -1,8 +1,9 @@
 package handler
 
 import (
-	"encoding/base64"
+	"fmt"
 	"io"
+	"lgtm-gen/pkg/config"
 	"lgtm-gen/pkg/lgtmgen"
 	"lgtm-gen/svc/pkg/application/response"
 	"lgtm-gen/svc/pkg/domain"
@@ -14,12 +15,14 @@ import (
 )
 
 type LGTMHandler struct {
-	lgtmRepo domain.ILGTMRepository
+	lgtmTableRepo  domain.ILGTMTableRepository
+	lgtmBucketRepo domain.ILGTMBucketRepository
 }
 
-func NewLGTMHandler(lgtmRepo domain.ILGTMRepository) *LGTMHandler {
+func NewLGTMHandler(lgtmTableRepo domain.ILGTMTableRepository, lgtmBucketRepo domain.ILGTMBucketRepository) *LGTMHandler {
 	return &LGTMHandler{
-		lgtmRepo: lgtmRepo,
+		lgtmTableRepo:  lgtmTableRepo,
+		lgtmBucketRepo: lgtmBucketRepo,
 	}
 }
 
@@ -40,19 +43,26 @@ func (l LGTMHandler) CreateLGTM() gin.HandlerFunc {
 			return
 		}
 
-		// FireStoreにデータを保存
+		// GCSに保存
 		id := uuid.New().String()
-		err = l.lgtmRepo.Create(id)
+		err = l.lgtmBucketRepo.Create(id, lgtm)
+		if err != nil {
+			log.Println(err)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		// FireStoreにデータを保存
+		conf := config.Get()
+		url := fmt.Sprintf("https://storage.googleapis.com/%v/%v", conf.Application.GCS.BucketName, id)
+		err = l.lgtmTableRepo.Create(id, url)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
 
-		// NOTE:本当はGCSかどこかに保存
-		lgtmBase64 := base64.StdEncoding.EncodeToString(lgtm)
-
 		res := response.CreateLGTMResponse{
-			ImageUrl: lgtmBase64,
+			ImageUrl: url,
 		}
 
 		c.JSON(http.StatusCreated, res)

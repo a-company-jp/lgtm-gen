@@ -2,7 +2,9 @@ package main
 
 import (
 	"lgtm-gen/pkg/fs"
-	infra "lgtm-gen/svc/pkg/infra/firestore"
+	"lgtm-gen/pkg/gcs"
+	infraFs "lgtm-gen/svc/pkg/infra/firestore"
+	infraGcs "lgtm-gen/svc/pkg/infra/gcs"
 	"log"
 	"net/http"
 
@@ -50,8 +52,13 @@ func main() {
 		log.Fatalf("failed to connect to firestore, err: %v", err)
 	}
 
+	g, err := gcs.NewGCS()
+	if err != nil {
+		log.Fatalf("failed to connect to gcs, err: %v", err)
+	}
+
 	apiV1 := r.Group("/api/v1")
-	if err := Implement(apiV1, f); err != nil {
+	if err := Implement(apiV1, f, g); err != nil {
 		log.Fatalf("Failed to start server...%v", err)
 		return
 	}
@@ -62,8 +69,8 @@ func main() {
 	}
 }
 
-func Implement(rg *gin.RouterGroup, f *fs.Firestore) error {
-	lgtmHandler := handler.NewLGTMHandler(infra.NewLGTMTable(f))
+func Implement(rg *gin.RouterGroup, f *fs.Firestore, g *gcs.GCS) error {
+	lgtmHandler := handler.NewLGTMHandler(infraFs.NewLGTMTable(f), infraGcs.NewLGTMBucket(g))
 
 	rg.Handle("POST", "/lgtm", lgtmHandler.CreateLGTM())
 
