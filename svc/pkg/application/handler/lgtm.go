@@ -68,3 +68,18 @@ func (l LGTMHandler) CreateLGTM() gin.HandlerFunc {
 		c.JSON(http.StatusCreated, res)
 	}
 }
+
+func (l LGTMHandler) GetList() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		lgtms, err := l.lgtmTableRepo.List()
+		if err != nil {
+			log.Println(err)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		res := response.NewGetListResponse(lgtms)
+
+		c.JSON(http.StatusOK, res)
+	}
+}
