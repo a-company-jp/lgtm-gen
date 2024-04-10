@@ -3,6 +3,6 @@ package model
 import "time"
 
 type LGTM struct {
-	ID        string
+	ID        string    `firestore:"-"`
 	CreatedAt time.Time `firestore:"createdAt"`
 }

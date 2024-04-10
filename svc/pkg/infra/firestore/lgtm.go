@@ -31,10 +31,10 @@ func (l LGTMTable) List() ([]model.LGTM, error) {
 	lgtms := make([]model.LGTM, len(docs))
 	for i, doc := range docs {
 		var lgtm = model.LGTM{}
-		lgtm.ID = doc.Ref.ID
 		if err := doc.DataTo(&lgtm); err != nil {
 			return nil, err
 		}
+		lgtm.ID = doc.Ref.ID
 		lgtms[i] = lgtm
 	}
 
