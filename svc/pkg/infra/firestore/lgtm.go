@@ -20,7 +20,7 @@ func NewLGTMTable(f *fs.Firestore) *LGTMTable {
 }
 
 // List get list of lgtm images data
-func (l LGTMTable) List() ([]*model.LGTM, error) {
+func (l LGTMTable) List() ([]model.LGTM, error) {
 	ctx := context.Background()
 	// TODO: pagination
 	docs, err := l.f.Client.Collection(LGTMCollectionName).Documents(ctx).GetAll()
@@ -28,14 +28,14 @@ func (l LGTMTable) List() ([]*model.LGTM, error) {
 		return nil, err
 	}
 
-	lgtms := make([]*model.LGTM, len(docs))
+	lgtms := make([]model.LGTM, len(docs))
 	for i, doc := range docs {
 		var lgtm = model.LGTM{}
 		lgtm.ID = doc.Ref.ID
 		if err := doc.DataTo(&lgtm); err != nil {
 			return nil, err
 		}
-		lgtms[i] = &lgtm
+		lgtms[i] = lgtm
 	}
 
 	return lgtms, nil

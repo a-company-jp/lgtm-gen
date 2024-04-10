@@ -5,6 +5,6 @@ import (
 )
 
 type ILGTMRepository interface {
-	List() ([]*model.LGTM, error)
+	List() ([]model.LGTM, error)
 	Create(id string) error
 }
