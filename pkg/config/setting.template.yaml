@@ -1,6 +1,5 @@
 application:
   server:
-    on_production:
     frontend:
       protocol:
       domain:
