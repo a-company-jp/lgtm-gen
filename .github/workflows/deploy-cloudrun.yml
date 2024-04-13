@@ -51,7 +51,7 @@ jobs:
 
       - name: create .env file
         run: |
-          echo "ENV_LOC=./setting-release.yaml" > .env
+          echo "ENV_LOCATION=./setting-release.yaml" > .env
           echo "${{ secrets.ENV_YAML }}" > ./setting-release.yaml
 
       - name: Build and push Docker image
