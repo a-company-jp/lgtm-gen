@@ -8,6 +8,7 @@ import (
 	"lgtm-gen/pkg/snowflake"
 	"lgtm-gen/svc/pkg/application/response"
 	"lgtm-gen/svc/pkg/domain"
+	"lgtm-gen/svc/pkg/domain/model"
 	"log"
 	"net/http"
 
@@ -73,7 +74,10 @@ func (l LGTMHandler) CreateLGTM() gin.HandlerFunc {
 		// FireStoreにデータを保存
 		conf := config.Get()
 		url := fmt.Sprintf("https://storage.googleapis.com/%v/%v", conf.Application.GCS.BucketName, id)
-		err = l.lgtmTableRepo.Create(id, url)
+		err = l.lgtmTableRepo.Create(model.LGTM{
+			ID:  id,
+			Url: url,
+		})
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
