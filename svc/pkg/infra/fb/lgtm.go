@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-const LGTMFolderName = "lgtms"
+const LGTMFolderName = "LGTMs"
 
 type LGTMTable struct {
 	f     *fb.Firebase
