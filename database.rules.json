@@ -6,6 +6,11 @@
       ".indexOn": [
         "createdAt"
       ]
+    },
+    "/lgtms": {
+      ".indexOn": [
+        "createdAt"
+      ]
     }
   }
 }
