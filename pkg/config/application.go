@@ -6,8 +6,7 @@ type (
 		GCS    GCS    `yaml:"gcs"`
 	}
 	Server struct {
-		OnProduction bool    `yaml:"on_production"`
-		Backend      Backend `yaml:"backend"`
+		Backend Backend `yaml:"backend"`
 	}
 	Backend struct {
 		Protocol string `yaml:"protocol"`
