@@ -45,5 +45,5 @@ jobs:
       - name: Run tests
         env:
           FIREBASE_DATABASE_EMULATOR_HOST: localhost:9000
-          ENV_LOCATION: ${{ github.workspace }}/pkg/setting/files/setting.testing.yaml
+          ENV_LOCATION: ${{ github.workspace }}/pkg/config/setting.testing.yaml
         run: go test -p=1 -race -coverprofile=coverage.txt -covermode=atomic ./... #gosetup
