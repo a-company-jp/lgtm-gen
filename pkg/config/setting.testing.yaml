@@ -15,8 +15,8 @@ infrastructure:
     project_id: some-project-id
     use_credentials_file: false
     credentials_file_path: /dev/null
-  firebase:
-    database_url: "http://localhost:9000"
+    firebase:
+      database_url: "http://localhost:9000"
 third_party:
 service:
   authentication:
