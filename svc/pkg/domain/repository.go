@@ -12,3 +12,7 @@ type ILGTMTableRepository interface {
 type ILGTMBucketRepository interface {
 	Create(objectName string, data []byte) error
 }
+
+type ISafeSearchRepository interface {
+	Detect(data []byte) ([]string, error)
+}
