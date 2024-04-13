@@ -25,17 +25,17 @@ func NewFirebase() (*Firebase, error) {
 		DatabaseURL: conf.Infrastructure.GoogleCloud.Firebase.DatabaseURL,
 	}
 	if conf.Infrastructure.GoogleCloud.UseCredentialsFile {
-		client, err = firebase.NewApp(ctx, fconf)
-		if err != nil {
-			return nil, fmt.Errorf("failed to create Firestore client without credential: %w", err)
-		}
-	} else {
 		opt := option.WithCredentialsFile(
 			conf.Infrastructure.GoogleCloud.CredentialsFilePath,
 		)
 		client, err = firebase.NewApp(ctx, fconf, opt)
 		if err != nil {
 			return nil, fmt.Errorf("failed to create Firebase client with credential: %w", err)
+		}
+	} else {
+		client, err = firebase.NewApp(ctx, fconf)
+		if err != nil {
+			return nil, fmt.Errorf("failed to create Firestore client without credential: %w", err)
 		}
 	}
 
