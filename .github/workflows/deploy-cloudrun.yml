@@ -22,7 +22,7 @@ jobs:
         with:
           token_format: access_token
           workload_identity_provider: 'projects/228944830644/locations/global/workloadIdentityPools/gh-pool/providers/provider-github'
-          service_account: 'gh-action@lgtmgen-project.iam.gserviceaccount.com'
+          service_account: 'gh-actions@lgtmgen-project.iam.gserviceaccount.com'
 
 #       - name: Set up Cloud SDK
 #         uses: 'google-github-actions/setup-gcloud@v2'
