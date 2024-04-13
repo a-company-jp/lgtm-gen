@@ -9,7 +9,19 @@ jobs:
     permissions:
       contents: 'read'
       id-token: 'write'
+      packages: 'write'
     steps:
+      - name: Authorize Docker for ghcr.io
+        id: docker-auth-ghcr
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: pull imagemagick image
+        run: docker pull ghcr.io/a-company-jp/imagemagick:latest
+
       - name: Checkout code
         uses: actions/checkout@v4
 
