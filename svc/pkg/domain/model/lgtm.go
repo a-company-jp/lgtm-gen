@@ -3,7 +3,7 @@ package model
 import "time"
 
 type LGTM struct {
-	ID        string    `firestore:"-"`
-	Url       string    `firestore:"url"`
-	CreatedAt time.Time `firestore:"createdAt"`
+	ID        string    `json:"-"`
+	Url       string    `json:"url"`
+	CreatedAt time.Time `json:"createdAt"`
 }

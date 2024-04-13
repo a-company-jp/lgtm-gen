@@ -5,19 +5,21 @@ import (
 	"io"
 	"lgtm-gen/pkg/config"
 	"lgtm-gen/pkg/lgtmgen"
+	"lgtm-gen/pkg/snowflake"
 	"lgtm-gen/svc/pkg/application/response"
 	"lgtm-gen/svc/pkg/domain"
+	"lgtm-gen/svc/pkg/domain/model"
 	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 )
 
 type LGTMHandler struct {
 	lgtmTableRepo  domain.ILGTMTableRepository
 	lgtmBucketRepo domain.ILGTMBucketRepository
 	safeSearchRepo domain.ISafeSearchRepository
+	idGen          snowflake.Snowflake
 }
 
 func NewLGTMHandler(lgtmTableRepo domain.ILGTMTableRepository, lgtmBucketRepo domain.ILGTMBucketRepository, safeSearchRepo domain.ISafeSearchRepository) *LGTMHandler {
@@ -25,6 +27,7 @@ func NewLGTMHandler(lgtmTableRepo domain.ILGTMTableRepository, lgtmBucketRepo do
 		lgtmTableRepo:  lgtmTableRepo,
 		lgtmBucketRepo: lgtmBucketRepo,
 		safeSearchRepo: safeSearchRepo,
+		idGen:          snowflake.NewSnowflake(),
 	}
 }
 
@@ -60,7 +63,7 @@ func (l LGTMHandler) CreateLGTM() gin.HandlerFunc {
 		}
 
 		// GCSに保存
-		id := uuid.New().String()
+		id := l.idGen.String()
 		err = l.lgtmBucketRepo.Create(id, lgtm)
 		if err != nil {
 			log.Println(err)
@@ -71,7 +74,10 @@ func (l LGTMHandler) CreateLGTM() gin.HandlerFunc {
 		// FireStoreにデータを保存
 		conf := config.Get()
 		url := fmt.Sprintf("https://storage.googleapis.com/%v/%v", conf.Application.GCS.BucketName, id)
-		err = l.lgtmTableRepo.Create(id, url)
+		err = l.lgtmTableRepo.Create(model.LGTM{
+			ID:  id,
+			Url: url,
+		})
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return

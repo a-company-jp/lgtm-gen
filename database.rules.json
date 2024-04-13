@@ -1,0 +1,11 @@
+{
+  "rules": {
+    ".read": "now < 1680274800000",
+    ".write": "now < 1680274800000",
+    "LGTMs": {
+      ".indexOn": [
+        "createdAt"
+      ]
+    }
+  }
+}
