@@ -5,7 +5,12 @@ type Infrastructure struct {
 }
 
 type GoogleCloud struct {
-	ProjectID           string `yaml:"project_id"`
-	UseCredentialsFile  bool   `yaml:"use_credentials_file"`
-	CredentialsFilePath string `yaml:"credentials_file_path"`
+	ProjectID           string   `yaml:"project_id"`
+	UseCredentialsFile  bool     `yaml:"use_credentials_file"`
+	CredentialsFilePath string   `yaml:"credentials_file_path"`
+	Firebase            Firebase `yaml:"firebase"`
+}
+
+type Firebase struct {
+	DatabaseURL string `yaml:"database_url"`
 }
