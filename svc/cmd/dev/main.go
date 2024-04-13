@@ -3,8 +3,10 @@ package main
 import (
 	"lgtm-gen/pkg/fs"
 	"lgtm-gen/pkg/gcs"
+	"lgtm-gen/pkg/gvision"
 	infraFs "lgtm-gen/svc/pkg/infra/firestore"
 	infraGcs "lgtm-gen/svc/pkg/infra/gcs"
+	infraGVision "lgtm-gen/svc/pkg/infra/gvision"
 	"log"
 	"net/http"
 
@@ -57,8 +59,13 @@ func main() {
 		log.Fatalf("failed to connect to gcs, err: %v", err)
 	}
 
+	gv, err := gvision.NewGVision()
+	if err != nil {
+		log.Fatalf("failed to connect to google vision api, err: %v", err)
+	}
+
 	apiV1 := r.Group("/api/v1")
-	if err := Implement(apiV1, f, g); err != nil {
+	if err := Implement(apiV1, f, g, gv); err != nil {
 		log.Fatalf("Failed to start server...%v", err)
 		return
 	}
@@ -69,8 +76,8 @@ func main() {
 	}
 }
 
-func Implement(rg *gin.RouterGroup, f *fs.Firestore, g *gcs.GCS) error {
-	lgtmHandler := handler.NewLGTMHandler(infraFs.NewLGTMTable(f), infraGcs.NewLGTMBucket(g))
+func Implement(rg *gin.RouterGroup, f *fs.Firestore, g *gcs.GCS, gv *gvision.GVision) error {
+	lgtmHandler := handler.NewLGTMHandler(infraFs.NewLGTMTable(f), infraGcs.NewLGTMBucket(g), infraGVision.NewSafeSearch(gv))
 
 	rg.Handle("POST", "/lgtms", lgtmHandler.CreateLGTM())
 	rg.Handle("GET", "/lgtms", lgtmHandler.GetList())
