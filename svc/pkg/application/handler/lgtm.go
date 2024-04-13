@@ -19,7 +19,6 @@ type LGTMHandler struct {
 	lgtmTableRepo  domain.ILGTMTableRepository
 	lgtmBucketRepo domain.ILGTMBucketRepository
 	safeSearchRepo domain.ISafeSearchRepository
-	idGen          snowflake.Snowflake
 }
 
 func NewLGTMHandler(lgtmTableRepo domain.ILGTMTableRepository, lgtmBucketRepo domain.ILGTMBucketRepository, safeSearchRepo domain.ISafeSearchRepository) *LGTMHandler {
@@ -27,7 +26,6 @@ func NewLGTMHandler(lgtmTableRepo domain.ILGTMTableRepository, lgtmBucketRepo do
 		lgtmTableRepo:  lgtmTableRepo,
 		lgtmBucketRepo: lgtmBucketRepo,
 		safeSearchRepo: safeSearchRepo,
-		idGen:          snowflake.NewSnowflake(),
 	}
 }
 
@@ -63,7 +61,7 @@ func (l LGTMHandler) CreateLGTM() gin.HandlerFunc {
 		}
 
 		// GCSに保存
-		id := l.idGen.String()
+		id := snowflake.NewSnowflake().String()
 		err = l.lgtmBucketRepo.Create(id, lgtm)
 		if err != nil {
 			log.Println(err)
