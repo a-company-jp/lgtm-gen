@@ -30,6 +30,8 @@ WORKDIR /app
 
 COPY ./ ./
 
+COPY .env .env
+
 RUN CGO_ENABLED=1 GOOS=linux go build -o main ./svc/cmd/dev/main.go
 
 # ポートの公開
