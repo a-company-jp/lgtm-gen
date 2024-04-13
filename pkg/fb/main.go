@@ -48,3 +48,9 @@ func NewFirebase() (*Firebase, error) {
 		Client: c,
 	}, nil
 }
+
+func NewWithClient(client *db.Client) Firebase {
+	return Firebase{
+		Client: client,
+	}
+}
