@@ -3,13 +3,13 @@ module lgtm-gen
 go 1.22.0
 
 require (
-	cloud.google.com/go/firestore v1.15.0
 	cloud.google.com/go/storage v1.40.0
 	cloud.google.com/go/vision v1.2.0
 	cloud.google.com/go/vision/v2 v2.8.0
 	firebase.google.com/go/v4 v4.14.0
 	github.com/gin-contrib/cors v1.7.1
 	github.com/gin-gonic/gin v1.9.1
+	github.com/godruoyi/go-snowflake v0.0.2
 	github.com/google/uuid v1.6.0
 	github.com/joho/godotenv v1.5.1
 	google.golang.org/api v0.170.0
@@ -21,6 +21,7 @@ require (
 	cloud.google.com/go v0.112.1 // indirect
 	cloud.google.com/go/compute v1.24.0 // indirect
 	cloud.google.com/go/compute/metadata v0.2.3 // indirect
+	cloud.google.com/go/firestore v1.15.0 // indirect
 	cloud.google.com/go/iam v1.1.7 // indirect
 	cloud.google.com/go/longrunning v0.5.5 // indirect
 	github.com/MicahParks/keyfunc v1.9.0 // indirect
