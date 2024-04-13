@@ -1,4 +1,4 @@
-FROM ghcr.io/a-company-jp/imagick:latest
+FROM ghcr.io/a-company-jp/imagemagick:latest
 
 WORKDIR /app
 
