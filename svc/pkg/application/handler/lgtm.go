@@ -5,19 +5,20 @@ import (
 	"io"
 	"lgtm-gen/pkg/config"
 	"lgtm-gen/pkg/lgtmgen"
+	"lgtm-gen/pkg/snowflake"
 	"lgtm-gen/svc/pkg/application/response"
 	"lgtm-gen/svc/pkg/domain"
 	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 )
 
 type LGTMHandler struct {
 	lgtmTableRepo  domain.ILGTMTableRepository
 	lgtmBucketRepo domain.ILGTMBucketRepository
 	safeSearchRepo domain.ISafeSearchRepository
+	idGen          snowflake.Snowflake
 }
 
 func NewLGTMHandler(lgtmTableRepo domain.ILGTMTableRepository, lgtmBucketRepo domain.ILGTMBucketRepository, safeSearchRepo domain.ISafeSearchRepository) *LGTMHandler {
@@ -25,6 +26,7 @@ func NewLGTMHandler(lgtmTableRepo domain.ILGTMTableRepository, lgtmBucketRepo do
 		lgtmTableRepo:  lgtmTableRepo,
 		lgtmBucketRepo: lgtmBucketRepo,
 		safeSearchRepo: safeSearchRepo,
+		idGen:          snowflake.NewSnowflake(),
 	}
 }
 
@@ -60,7 +62,7 @@ func (l LGTMHandler) CreateLGTM() gin.HandlerFunc {
 		}
 
 		// GCSに保存
-		id := uuid.New().String()
+		id := l.idGen.String()
 		err = l.lgtmBucketRepo.Create(id, lgtm)
 		if err != nil {
 			log.Println(err)
