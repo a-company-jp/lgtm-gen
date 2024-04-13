@@ -47,7 +47,7 @@ jobs:
         with:
           push: true
           tags: asia-northeast1-docker.pkg.dev/lgtmgen-project/dev-main/backend:latest
-          file: ./cloudrun/Dockerfile
+          file: ./svc/cmd/dev/Dockerfile
           context: ./
 
       - name: Download Cloud Run Service YAML
