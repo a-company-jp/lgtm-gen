@@ -27,6 +27,9 @@ jobs:
         with:
           go-version-file: ./go.mod
           cache: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
       - name: Download Go modules
         shell: bash
         if: ${{ steps.setup-go.outputs.cache-hit != 'true' }}
