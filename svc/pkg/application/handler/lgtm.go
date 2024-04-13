@@ -17,12 +17,14 @@ import (
 type LGTMHandler struct {
 	lgtmTableRepo  domain.ILGTMTableRepository
 	lgtmBucketRepo domain.ILGTMBucketRepository
+	safeSearchRepo domain.ISafeSearchRepository
 }
 
-func NewLGTMHandler(lgtmTableRepo domain.ILGTMTableRepository, lgtmBucketRepo domain.ILGTMBucketRepository) *LGTMHandler {
+func NewLGTMHandler(lgtmTableRepo domain.ILGTMTableRepository, lgtmBucketRepo domain.ILGTMBucketRepository, safeSearchRepo domain.ISafeSearchRepository) *LGTMHandler {
 	return &LGTMHandler{
 		lgtmTableRepo:  lgtmTableRepo,
 		lgtmBucketRepo: lgtmBucketRepo,
+		safeSearchRepo: safeSearchRepo,
 	}
 }
 
@@ -32,6 +34,20 @@ func (l LGTMHandler) CreateLGTM() gin.HandlerFunc {
 		if err != nil {
 			log.Println(err)
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to read request body"})
+			return
+		}
+
+		// セーフサーチ
+		annotations, err := l.safeSearchRepo.Detect(imgData)
+		if err != nil {
+			log.Println(err)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		if len(annotations) > 0 {
+			log.Printf("detected: %v", annotations)
+			c.JSON(http.StatusBadRequest, gin.H{"error": fmt.Sprintf("Inappropriate image")})
 			return
 		}
 
