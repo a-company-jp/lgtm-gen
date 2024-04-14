@@ -15,7 +15,7 @@ type FirebaseTest struct {
 func NewFirebaseTest() *FirebaseTest {
 	ctx := context.Background()
 	conf := &fb.Config{
-		DatabaseURL: "localhost:9000/?ns=testdb",
+		DatabaseURL: "localhost:9000/?ns=lgtmgen-project-default-rtdb",
 	}
 	app, err := fb.NewApp(ctx, conf)
 	if err != nil {
