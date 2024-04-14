@@ -18,7 +18,7 @@ type LGTM struct {
 func NewGetListResponse(lgtms []model.LGTM) []LGTM {
 	var lgtmsView = make([]LGTM, len(lgtms))
 	for i, lgtm := range lgtms {
-		lgtmsView[len(lgtms)-i] = LGTM{
+		lgtmsView[len(lgtms)-i-1] = LGTM{
 			ID:        lgtm.ID,
 			Url:       lgtm.Url,
 			CreatedAt: lgtm.CreatedAt,
