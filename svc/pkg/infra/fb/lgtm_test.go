@@ -1,6 +1,7 @@
 package infra
 
 import (
+	"github.com/stretchr/testify/assert"
 	"lgtm-gen/pkg/testutil"
 	"lgtm-gen/svc/pkg/domain/model"
 	"testing"
@@ -13,17 +14,17 @@ func TestLGTMTable_Set(t *testing.T) {
 	client := NewLGTMTable(fb.GetClient())
 	testdata := []model.LGTM{
 		{
-			ID:        "1",
+			ID:        "1234",
 			Url:       "https://example.com/img/1",
 			CreatedAt: time.Now().Add(-2 * time.Hour),
 		},
 		{
-			ID:        "2",
+			ID:        "1235",
 			Url:       "https://example.com/img/2",
 			CreatedAt: time.Now().Add(-time.Hour),
 		},
 		{
-			ID:        "3",
+			ID:        "1236",
 			Url:       "https://example.com/img/3",
 			CreatedAt: time.Now().Add(-30 * time.Minute),
 		},
@@ -47,8 +48,6 @@ func TestLGTMTable_Set(t *testing.T) {
 		if d.Url != results[i].Url {
 			t.Fatalf("results[%d].Url got: %s, want: %s", i, results[i].Url, d.Url)
 		}
-		if d.CreatedAt != results[i].CreatedAt {
-			t.Fatalf("results[%d].CreatedAt got: %v, want: %v", i, results[i].CreatedAt, d.CreatedAt)
-		}
+		assert.True(t, d.CreatedAt.Equal(results[i].CreatedAt))
 	}
 }
